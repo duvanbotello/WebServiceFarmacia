@@ -17,7 +17,7 @@ namespace WebServiceFarmacia.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            Respuesta oRespuesta = new Respuesta();
+            Respuesta<List<Cliente>> oRespuesta = new Respuesta<List<Cliente>>();
             try
             {
                 using (DrogueriaP3sContext db = new DrogueriaP3sContext())
@@ -34,10 +34,31 @@ namespace WebServiceFarmacia.Controllers
             return Ok(oRespuesta);
         }
 
+        [HttpGet("{Id}")]
+        public IActionResult Get(int Id)
+        {
+            Respuesta<Cliente> oRespuesta = new Respuesta<Cliente>();
+            try
+            {
+                using (DrogueriaP3sContext db = new DrogueriaP3sContext())
+                {
+                    var lst = db.Cliente.Find(Id);
+                    oRespuesta.Exito = 1;
+                    oRespuesta.Data = lst;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                oRespuesta.Mensaje = ex.Message;
+            }
+            return Ok(oRespuesta);
+        }
+
         [HttpPost]
         public IActionResult Add(ClienteRequest model)
         {
-            Respuesta oRespuesta = new Respuesta();
+            Respuesta<object> oRespuesta = new Respuesta<object>();
             try
             {
                 using (DrogueriaP3sContext db = new DrogueriaP3sContext())
@@ -66,7 +87,7 @@ namespace WebServiceFarmacia.Controllers
         [HttpPut]
         public IActionResult Edit(ClienteRequest model)
         {
-            Respuesta oRespuesta = new Respuesta();
+            Respuesta<Cliente> oRespuesta = new Respuesta<Cliente>();
             try
             {
                 using (DrogueriaP3sContext db = new DrogueriaP3sContext())
@@ -95,7 +116,7 @@ namespace WebServiceFarmacia.Controllers
         [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
-            Respuesta oRespuesta = new Respuesta();
+            Respuesta<object> oRespuesta = new Respuesta<object>();
             try
             {
                 using (DrogueriaP3sContext db = new DrogueriaP3sContext())
@@ -113,6 +134,8 @@ namespace WebServiceFarmacia.Controllers
             }
             return Ok(oRespuesta);
         }
+
+       
 
 
     }
